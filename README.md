@@ -1,14 +1,13 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# RNSplash
 
-# Getting Started
+RNSplash é um projeto React Native para gerenciar telas de splash com animações personalizáveis. Permite controlar com facilidade o tempo e a forma como a tela de splash desaparece em seu aplicativo.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Recursos
 
-## Step 1: Start the Metro Server
+- Diferentes tipos de animações para esconder a tela de splash (fade, scale, none)
+- Configuração personalizada de duração e atraso
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
+## Rodar Projeto
 
 ```bash
 # using npm
@@ -18,62 +17,109 @@ npm start
 yarn start
 ```
 
-## Step 2: Start your Application
+## Codebase
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### Javascript
 
-### For Android
 
-```bash
-# using npm
-npm run android
+### Caminho do NativeSplash.ts
 
-# OR using Yarn
-yarn android
+```
+RNSplash/NativeSplash.ts
 ```
 
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+### Import do NativeSplash.ts no App.tsx
+```typescript
+import { hideSplashScreen } from './NativeSplash';
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+### Escondendo a tela de splash com configurações padrão
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+```typescript
+// Usará uma animação de escala com duração de 500ms e atraso de 200ms
+hideSplashScreen();
+```
 
-## Step 3: Modifying your App
+### Personalizando a animação
 
-Now that you have successfully run the app, let's modify it.
+```typescript
+// Com tipo de animação personalizado
+hideSplashScreen({ animationType: 'fade' });
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+// Com duração e atraso personalizados
+hideSplashScreen({
+  animationType: 'scale',
+  duration: 800,    // duração em ms
+  delay: 300        // atraso em ms
+});
+```
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+## Opções
 
-## Congratulations! :tada:
+| Propriedade    | Tipo                           | Padrão    | Descrição                           |
+|----------------|--------------------------------|-----------|-------------------------------------|
+| animationType  | 'none' \| 'fade' \| 'scale'    | 'scale'   | Tipo de animação                    |
+| duration       | number                         | 500       | Duração da animação em ms           |
+| delay          | number                         | 200       | Atraso antes da animação iniciar    |
 
-You've successfully run and modified your React Native App. :partying_face:
 
-### Now what?
+### Android
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+#### Estrutura de Arquivos
 
-# Troubleshooting
+Os arquivos relacionados ao módulo nativo da Splash estão localizados no seguinte diretório:
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```
+android/app/src/main/java/com/rnsplash/
+```
 
-# Learn More
+Este diretório contém os seguintes arquivos importantes:
+- `SplashModule.kt` - Implementação principal do módulo nativo
+- `SplashPackage.kt` - Package que registra o módulo
+- `RCTSplashScreen.kt` - Core da splash
 
-To learn more about React Native, take a look at the following resources:
+#### Configuração da Imagem
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+A imagem da tela de splash deve:
+- Ser nomeada como `splash.png`
+- Estar localizada em: `android/app/src/main/res/drawable/`
+- Preferencialmente ter diferentes resoluções para diversos tamanhos de tela (usando as pastas drawable-hdpi, drawable-xhdpi, etc.)
+
+#### Dicas de Otimização
+
+- Use imagens PNG otimizadas para reduzir o tamanho do APK
+- Para uma experiência consistente, mantenha as proporções da imagem em todas as resoluções
+- Teste a splash em diferentes dispositivos para garantir boa aparência em todos os tamanhos de tela
+
+## Exemplo completo
+
+```typescript
+import React, { useEffect } from 'react';
+import { View, Text } from 'react-native';
+import { hideSplashScreen } from './NativeSplash';
+
+function App() {
+  useEffect(() => {
+    // Esconde a tela de splash quando o componente for montado
+    hideSplashScreen({
+      animationType: 'fade',
+      duration: 1000,
+      delay: 500
+    });
+  }, []);
+
+  return (
+    <View>
+      <Text>Meu App!</Text>
+    </View>
+  );
+}
+
+export default App;
+```
+
+## Demonstração
+
+Abaixo está uma demonstração visual de como a tela de splash funciona:
+
+![Demonstração da Splash Screen](./assets/splash-demo.gif)

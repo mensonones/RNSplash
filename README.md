@@ -78,6 +78,15 @@ Este diretório contém os seguintes arquivos importantes:
 - `SplashPackage.kt` - Package que registra o módulo
 - `RCTSplashScreen.kt` - Core da splash
 
+Na MainActivity.kt
+
+```java
+override fun onCreate(savedInstanceState: Bundle?) {
+  super.onCreate(savedInstanceState)
+  RCTSplashScreen.openSplashScreen(this, true)
+}
+```
+
 #### Configuração da Imagem
 
 A imagem da tela de splash deve:

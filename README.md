@@ -122,4 +122,6 @@ export default App;
 
 Abaixo está uma demonstração visual de como a tela de splash funciona:
 
-![Demonstração da Splash Screen](./assets/splash-demo.gif)
+## 📸 Preview
+
+![Preview](https://github.com/mensonones/RNSplash/blob/main/assets/splash.gif)
